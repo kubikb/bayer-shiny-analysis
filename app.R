@@ -80,7 +80,7 @@ ui <- shinyUI(
           "Mr. Bayer is a publicist from Hungary known in the political life as an ardent supporter of Viktor Orbán, prime minister of Hungary (1998-2002, 2010-), and the party Fidesz."
         ),
         p(
-          "After scraping all blog posts from the time period from May 20th, 2015 (start of the blog) to January 11, 2018 (scraper script",
+          "After scraping all blog posts from the time period from May 20th, 2015 (start of the blog) to March 9th, 2018 (scraper script",
           a(href="https://github.com/kubikb/bayer_blog_parser", "HERE", target="_blank"),
           "), data was cleaned, lemmatized using the awesome",
           a(href="http://www.inf.u-szeged.hu/rgai/magyarlanc", "Magyarlánc tool", target="_blank"),
