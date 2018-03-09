@@ -91,7 +91,9 @@ ui <- shinyUI(
           "It was created by",
           a(href="https://www.linkedin.com/in/balintkubik/", "Bálint Kubik", target="_blank"),
           "to play with network visualization in",
-          a(href="https://shiny.rstudio.com/", "Shiny for R.", target="_blank")
+          a(href="https://shiny.rstudio.com/", "Shiny for R.", target="_blank"),
+          "Github repository with the source can be found",
+          a(href="https://github.com/kubikb/bayer-shiny-analysis", "HERE.", target="_blank")
         )
       )
     ),
