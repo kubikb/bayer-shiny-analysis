@@ -3,7 +3,7 @@ This repo contains the source code of an R Shiny app, which visualizes the word 
 
 Text analysis was executed with [tidytext](https://github.com/juliasilge/tidytext) (script also available in the repo) and the bigram association network is visualized with [networkD3 for R](https://github.com/christophergandrud/networkD3). Deployment to Heroku happens through the [Heroku R buildpack](https://github.com/virtualstaticvoid/heroku-buildpack-r/tree/heroku-16).
 
-The Python scraper producing 
+The Python scraper that collects the blog posts can be found [HERE](https://github.com/kubikb/bayer_blog_parser). 
 
 ![](img/screenshot.png)
 
