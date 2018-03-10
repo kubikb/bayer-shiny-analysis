@@ -3,39 +3,28 @@ library(networkD3)
 
 setwd(getwd())
 
-default_terms <- c("Soros","CEU","kormány")
+source("plot-input.R")
+
+default_terms <- c("kormány","Orbán","Soros")
+min_date <- "2015-05-20"
+max_date <- "2018-03-09"
 
 # Read prepared data
-word_corrs <- read.delim("data/word_corrs.tsv", sep = "\t", encoding = "UTF-8")
-unique_terms <- unique(word_corrs$item1)
+word_corrs <- read.delim("data/word_corrs.tsv", sep = "\t", encoding = "UTF-8", stringsAsFactors = F)
+unique_terms <- unique(c(word_corrs$item1, word_corrs$item2))
 
 # Server Logic
 server <- function(input, output) {
   graph_input = reactive({
+    valid_terms <- prepare_input_terms(input$terms_input, unique_terms)
     
-    input_terms <- strsplit(input$terms_input, ',')[[1]]
-    input_terms <- trimws(tolower(input_terms))
-    valid_terms <- intersect(unique_terms, input_terms)
-    
-    if (length(valid_terms) == 0) {
-      valid_terms <- c("")
-    }
-    
-    terms_df <- word_corrs[
-      (word_corrs$item1 %in% valid_terms) & (word_corrs$correlation >= input$min_corr),
-      ]
-    
-    if(nrow(terms_df) == 0){
-      terms_df <- data.frame()
-      for(term in valid_terms){
-        terms_df <- rbind(
-          terms_df,
-          data.frame(s=term, t=term, v=1)
-        )
-      }
-    }
-    
-    return(terms_df)
+    return(
+      generate_graph_plot_input(
+        word_corrs,
+        valid_terms,
+        input$min_corr
+      )
+    )
   });
   
   output$force <- renderForceNetwork({ 
@@ -55,7 +44,7 @@ ui <- shinyUI(
       includeHTML("google-analytics.html"),
       tags$style(
         type="text/css",
-        "img {max-height: 200px;}"
+        "img {max-height: 150px; display:inline-block;}"
       )
     ),
     
@@ -63,11 +52,14 @@ ui <- shinyUI(
       # column(
       #   width = 2,
       #   align="center",
-      #   img(
-      #     src="http://www.sztarklikk.hu/images/articleMain/33421.jpg",
-      #     align="center",
-      #     class="img-responsive"
+      #   div(
+      #     class="thumbnail",
+      #     img(
+      #       src="http://www.sztarklikk.hu/images/articleMain/33421.jpg",
+      #       align="center",
+      #       class="img-responsive"
       #     )
+      #   )
       # ),
       
       column(
@@ -80,7 +72,11 @@ ui <- shinyUI(
           "Mr. Bayer is a publicist from Hungary known in the political life as an ardent supporter of Viktor Orbán, prime minister of Hungary (1998-2002, 2010-), and the party Fidesz."
         ),
         p(
-          "After scraping all blog posts from the time period from May 20th, 2015 (start of the blog) to March 9th, 2018 (scraper script",
+          "After scraping all blog posts from the time period from", 
+          min_date,
+          "to",
+          max_date,
+          "(scraper script",
           a(href="https://github.com/kubikb/bayer_blog_parser", "HERE", target="_blank"),
           "), data was cleaned, lemmatized using the awesome",
           a(href="http://www.inf.u-szeged.hu/rgai/magyarlanc", "Magyarlánc tool", target="_blank"),
